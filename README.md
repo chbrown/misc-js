@@ -41,17 +41,21 @@ It's absolutely positioned, so you needn't put dummy "submit-debug" spans in you
 All the arguments above are optional, and have the defaults shown above (except `html`, which has the default "!!!").
 
 - `update` determines whether or not to add the flag, or replace an existing flag that is already attached to that element
-- `anchor` is one of t|r|b|l -- at the moment, only `l` and `r` are supported. Determines what side of the element the flag appears on.
-- `align` is one of l|c|r|t|m|b -- at the moment, only `t`, `m`, and `b` are supported.
+- `anchor` is one of `trbl` -- at the moment, only `l` and `r` are supported. Determines what side of the element the flag appears on.
+- `align` is one of `lcrtmb` -- at the moment, only `t`, `m`, and `b` are supported.
 - `html` is used the content of the flag.
 
 If you use only a string, it will use that as the `html` argument.
 
     $('#submit').flag('Failed');
 
+The latest flag object is attached as $el.data('flag').
+
+    $('#submit').data('flag').$flag.fadeOut('slow');
+
 ## jquery.cookie.js
 
-[https://github.com/carhartl/jquery-cookie]
+https://github.com/carhartl/jquery-cookie
 
 Copyright 2011, Klaus Hartl, Dual licensed under the MIT or GPL Version 2 licenses.
 
@@ -70,7 +74,7 @@ Copyright 2011, Klaus Hartl, Dual licensed under the MIT or GPL Version 2 licens
 
 ## jquery.tablesorter.js
 
-[http://tablesorter.com/]
+http://tablesorter.com/
 
 Copyright 2007 Christian Bach, Dual licensed under MIT or GPL licenses.
 
