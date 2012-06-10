@@ -4,6 +4,8 @@ Here are some jQuery plugins that I like, some of which I've created, and use of
 
 ## jquery.autocomplete.js
 
+Copyright 2011-2012 Christopher Brown, MIT License
+
 jQuery UI's autocomplete is too bulky and hard to configure. The hoops you have to jump through, just to use use a little `<b>` markup in your results, it's crazy.
 
 But this plugin, I want you to copy & paste into your own project, and to tear apart, and build out of. Because autocomplete has to be blazing fast, and that means it has to be bloody simple. This is just a little starting block for an autocomplete. Your mileage <em>will</em> vary.
@@ -27,6 +29,8 @@ Then call:
     // the actual Autocomplete object will be available at each element's .data('autocomplete') key
 
 ## jquery.flags.js
+
+Copyright 2012 Christopher Brown, MIT License
 
 Like those "Sign here" post-its, this plug-in is intended to provide element level flash messages/feedback.
 It's absolutely positioned, so you needn't put dummy "submit-debug" spans in your html just to provide a little feedback.
