@@ -57,6 +57,36 @@ The latest flag object is attached as $el.data('flag').
 
     $('#submit').data('flag').$flag.fadeOut('slow');
 
+Here's the basic LESS css required for this plugin (recent update removes styling from the javascript):
+
+    .flag {
+      position: absolute;
+      background-color: black;
+      border-radius: 4px;
+      padding: 2px;
+      color: white;
+      font-size: 90%;
+      // like a diamond -- half-diameter measure
+      .triangle {
+        display: inline-block;
+        position: absolute;
+        border: 6px solid transparent;
+        width: 0;
+        height: 0;
+      }
+      .subflag {
+        display: inline-block;
+        span, a {
+          display: inline-block;
+          padding: 0 4px;
+        }
+        a {
+          background-color: white;
+          border-radius: 2px;
+        }
+      }
+    }
+
 ## jquery.cookie.js
 
 https://github.com/carhartl/jquery-cookie
