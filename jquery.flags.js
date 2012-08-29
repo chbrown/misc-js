@@ -37,19 +37,27 @@
   Flag.prototype.redraw = function() {
     var self = this,
       target_offset = this.$target.offset(), // { left: 999, top: 999 }
-      target_size = this.$target.measureBox(); // { width: 999, height: 999 }
+      target_size = this.$target.measureBox(), // { width: 999, height: 999 }
+      $content;
     this.$flag.fadeIn(80);
     if (this.onclick) {
-      $('<a href="#"></a>').appendTo(this.$sub.empty()).text(this.text).click(function(ev) {
+      $content = $('<a href="#"></a>').click(function(ev) {
         ev.preventDefault();
         self.onclick();
       });
     }
     else if (this.href) {
-      $('<a href="' + this.href + '"></a>').appendTo(this.$sub.empty()).text(this.text);
+      $content = $('<a href="' + this.href + '"></a>');
     }
     else {
-      $('<span></span>').appendTo(this.$sub.empty()).text(this.text);
+      $content = $('<span></span>');
+    }
+    $content.appendTo(this.$sub.empty());
+    if (this.html) {
+      $content.html(this.html);
+    }
+    else {
+      $content.text(this.text);
     }
     var flag_size = this.$flag.measureBox(); // { width: 999, height: 999 }
 
@@ -105,7 +113,10 @@
     $target.data('flag', flag);
     flag.href = args.href;
     flag.onclick = args.onclick;
-    flag.text = args.text || '!!!';
+    flag.html = args.html;
+    flag.text = args.text;
+    if (!flag.html && !flag.text)
+      flag.text = '!!!';
     flag.redraw();
 
     if (args.fade !== undefined) {
