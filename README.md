@@ -2,8 +2,6 @@
 
 Standard web static files, such as jQuery, bootstrap.css, Backbone.js
 
-
-
 ## I have also merged my jQuery-plugins repo into this one. Might as well.
 
 Here are some jQuery plugins that I like, some of which I've created, and use often.
