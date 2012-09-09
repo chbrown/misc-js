@@ -1,4 +1,10 @@
-# jQuery Plugins
+# static-lib
+
+Standard web static files, such as jQuery, bootstrap.css, Backbone.js
+
+
+
+## I have also merged my jQuery-plugins repo into this one. Might as well.
 
 Here are some jQuery plugins that I like, some of which I've created, and use often.
 
@@ -8,7 +14,7 @@ Copyright 2011-2012 Christopher Brown, MIT License
 
 jQuery UI's autocomplete is too bulky and hard to configure. The hoops you have to jump through, just to use use a little `<b>` markup in your results, it's crazy.
 
-But this plugin, I want you to copy & paste into your own project, and to tear apart, and build out of. Because autocomplete has to be blazing fast, and that means it has to be bloody simple. This is just a little starting block for an autocomplete. Your mileage <em>will</em> vary.
+But this plugin, I want you to copy & paste into your own project, and to tear apart, and build out of. Because autocomplete has to be blazing fast, and that means it has to be bloody simple. This is just a little starting block for an autocomplete. Your mileage *will* vary.
 
 In your html:
 
