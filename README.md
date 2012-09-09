@@ -3,8 +3,8 @@
 Standard web static files, such as jQuery, bootstrap.css, Backbone.js
 
     # cd to your project...
-    cd static
-    git submodule add git://github.com/chbrown/static-lib.git lib
+    mkdir static
+    git submodule add git://github.com/chbrown/static-lib.git static/lib
 
 ## jQuery-plugins
 
