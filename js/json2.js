@@ -1,4 +1,5 @@
-
+// The following JSON.stringify and JSON.parse code is public domain
+// https://github.com/douglascrockford/JSON-js/blob/master/json2.js
 var JSON;if(!JSON){JSON={};}
 (function(){'use strict';function f(n){return n<10?'0'+n:n;}
 if(typeof Date.prototype.toJSON!=='function'){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+'-'+
