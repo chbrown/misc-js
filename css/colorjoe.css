@@ -1,23 +1,21 @@
-/* main dimensions */
-.colorPicker .twod, .colorPicker .twod .bg {
-    width: 160px;
-    height: 160px;
-}
-.colorPicker .oned, .colorPicker .oned .bg {
-    height: 160px;
-}
-
-
-
-#rgbValue {
+#rgbValue, #hslaValue {
     float: right;
 }
 
+.container {
+    overflow: auto;
+}
+
+#showPicker {
+    float: left;
+}
+
 .colorPicker {
-    background: #F8F6F0;
+    background: #E8E6E0;
     border: 1px solid #BBB;
     -moz-border-radius: .3em;
     border-radius: .3em;
+    margin: 1em;
     display: inline-block;
 }
 
@@ -26,7 +24,12 @@
     margin: 0.5em;
 }
 
+.colorPicker .extras .currentColorContainer {
+    overflow: hidden;
+}
+
 .colorPicker .extras .currentColor {
+    float: right;
     width: 65px;
     height: 30px;
     border: 1px solid #BBB;
@@ -61,6 +64,18 @@
     margin: 0.5em;
 }
 
+/* main dimensions */
+.colorPicker .twod, .colorPicker .twod .bg {
+    width: 240px;
+    height: 240px;
+}
+.colorPicker .oned, .colorPicker .oned .bg {
+    height: 240px;
+}
+.colorPicker .oned, .colorPicker .oned .bg, .colorPicker .oned .pointer .shape {
+    width: 20px;
+}
+
 .colorPicker .twod .bg {
     position: absolute;
 
@@ -73,6 +88,7 @@
 .colorPicker .twod .pointer {
     position: relative;
     z-index: 2;
+    width: 8px;
 }
 .colorPicker .twod .pointer .shape {
     position: absolute;
@@ -100,9 +116,7 @@
     float: left;
     margin: 0.5em;
 }
-.colorPicker .oned, .colorPicker .oned .bg, .colorPicker .oned .pointer .shape {
-    width: 20px;
-  }
+
 .colorPicker .oned .bg {
     border: 1px solid #BBB;
     /*
@@ -138,9 +152,7 @@
     background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0)));
     background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
     background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
-    background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
     background: linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );
 }
 .colorPicker .twod .bg2 {
     z-index: 1;
@@ -148,9 +160,7 @@
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1)));
     background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
     background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-    background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
     background: linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 );
 }
 
 #hslPicker .twod .bg1 {
@@ -166,9 +176,7 @@
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(127,127,127,1)));
     background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(127,127,127,1) 100%);
     background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(127,127,127,1) 100%);
-    background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(127,127,127,1) 100%);
     background: linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(127,127,127,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#7f7f7f',GradientType=0 );
 }
 
 #hslPicker .oned .bg {
@@ -180,3 +188,18 @@
     background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,1) 100%);
 }
 
+#hslPicker .extras {
+    width: 100px;
+}
+
+#hslPicker .oned.alpha {
+    margin: 0;
+}
+
+#hslPicker .oned.alpha .bg {
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* W3C */
+}
