@@ -67,7 +67,7 @@ ControlSet.prototype.initialize = function(value) {
     });
   }
   else {
-    $(this.sel).on('change', function(ev) {
+    $(this.sel).on('change keyup', function(ev) {
       self.emit('change', self.sel, $(this).val());
     });
   }
