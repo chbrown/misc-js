@@ -1,3 +1,5 @@
+var page_load_ticks = Date.now();
+
 var CacheManager = Backbone.Model.extend({
   timestamp: page_load_ticks / 60000 | 0,
   browser: localStorage,
@@ -7,11 +9,26 @@ var CacheManager = Backbone.Model.extend({
     // if (opts && opts.timestamp) this.timestamp = opts.timestamp;
   },
   _get: function(key) {
-    return this.page[key] || this.browser[key];
+    if (this.page[key]) {
+      return this.page[key];
+    }
+    else {
+      try {
+        return JSON.parse(this.browser[key]);
+      }
+      catch (exc) {
+        return undefined;
+      }
+    }
   },
   _set: function(key, value) {
     this.page[key] = value;
-    this.browser[key] = value;
+    try {
+      this.browser[key] = JSON.stringify(value);
+    }
+    catch (exc) {
+      // console.log('Could not serialize value');
+    }
   },
   get: function(url, callback) {
     var self = this;
@@ -47,7 +64,6 @@ var CacheManager = Backbone.Model.extend({
       if (!(url in this.processing)) {
         this.processing[url] = 1;
         $.get(url, function(data) {
-          console.log("compiling hogan template");
           var compiled = Hogan.compile(data);
           self._set(key, compiled);
           self.trigger(key, compiled);
@@ -56,4 +72,3 @@ var CacheManager = Backbone.Model.extend({
     }
   }
 });
-var cache_manager = new CacheManager({});
