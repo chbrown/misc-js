@@ -1,3 +1,4 @@
+// cat json2.js underscore.js backbone.js > backbone_pkg.js
 // The following JSON.stringify and JSON.parse code is public domain
 // https://github.com/douglascrockford/JSON-js/blob/master/json2.js
 var JSON;if(!JSON){JSON={};}
