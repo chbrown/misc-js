@@ -77,6 +77,7 @@ ControlSet.prototype.set = function(value) {
     $(this.sel).children('option[value="' + value + '"]').prop('selected', true);
   }
   else if (this.type === 'radio') {
+    // TODO: support getting (trimmed) html/text from parent label when value is not specified
     $(this.sel).filter('[value="' + value + '"]').prop('checked', true);
   }
   else if (this.type === 'checkbox') {
