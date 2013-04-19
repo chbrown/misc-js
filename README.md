@@ -34,7 +34,7 @@ Where /users.json?q=jo will respond in json like the following:
 Either `label` or `value` must be present, and if both are, `label` is used.
 
 Then call:
-    
+
     $('input[data-autocomplete]').ac();
     // the actual Autocomplete object will be available at each element's .data('autocomplete') key
 
@@ -46,10 +46,12 @@ Like those "Sign here" post-its, this plug-in is intended to provide element lev
 It's absolutely positioned, so you needn't put dummy "submit-debug" spans in your html just to provide a little feedback.
 
     $('#submit').flag({
-      update: true,
-      anchor: 'r',
-      align: 'm',
-      html: 'This element needs attention',
+      update: true, // change the text if there's already a flag on #submit
+      anchor: 'r', // put on the right side of the #submit element
+      align: 'm', // vertical-align: middle
+      html: 'This element needs <em>attention</em>', // uses html()
+      // text: 'So does this one.', // for text(), if you play safe like that
+      fade: 5000 // auto fadeOut() after five seconds.
     });
 
 All the arguments above are optional, and have the defaults shown above (except `html`, which has the default "!!!").
