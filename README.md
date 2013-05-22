@@ -1,14 +1,4 @@
-# static-lib
-
-Standard web static files, such as jQuery, bootstrap.css, Backbone.js
-
-    # cd to your project...
-    mkdir static
-    git submodule add git://github.com/chbrown/static-lib.git static/lib
-
-## jQuery-plugins
-
-I have also merged my jQuery-plugins repo into this one. Might as well.
+# jquery-plugins
 
 Here are some jQuery plugins that I like, some of which I've created, and use often.
 
