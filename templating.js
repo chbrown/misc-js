@@ -1,4 +1,4 @@
-// Copyright 2012-2013, Christopher Brown <io@henrian.com>, MIT Licensed
+// Copyright 2013, Christopher Brown <io@henrian.com>, MIT Licensed
 // https://github.com/chbrown/misc-js :: templating.js
 "use strict"; /*jslint indent: 2 */ /*globals _, $, Backbone, Handlebars */
 
