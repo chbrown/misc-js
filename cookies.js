@@ -46,7 +46,7 @@ var cookies = (function() {
       if (opts.expires) pairs.push(['expires', opts.expires.toUTCString()]);
       if (opts.path) pairs.push(['path', opts.path]);
       if (opts.domain) pairs.push(['domain', opts.domain]);
-      if (opts.path) pairs.push(['secure']);
+      if (opts.secure) pairs.push(['secure']);
       var cookie = pairs.map(function(pair) { return pair.join('='); }).join('; ');
       document.cookie = cookie;
       return cookie;
