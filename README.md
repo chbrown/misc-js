@@ -1,8 +1,19 @@
 # misc-js
 
 Custom client-side javascript libraries for use with jQuery, Backbone, and Handlebars.
-Too small to make into their own repositories.
-Too big to keep copy and pasting.
+
+* Too small to make into their own repositories.
+* Too big to keep copy and pasting.
+
+## Standards
+
+JSLint:
+
+    "use strict"; /*jslint indent: 2 */
+
+E.g., with jQuery, underscore.js:
+
+    "use strict"; /*jslint indent: 2 */ /*globals $, _ */
 
 ## jquery.autocomplete.js
 
