@@ -1,6 +1,6 @@
 // Copyright 2012-2013, Christopher Brown <io@henrian.com>, MIT Licensed
 // https://github.com/chbrown/misc-js :: cookies.js
-// "use strict"; /*jslint indent: 2 */
+//"use strict"; /*jslint indent: 2 */
 var cookies = (function() {
   function extend(target, source) {
     for (var key in source) {
@@ -25,7 +25,7 @@ var cookies = (function() {
       default_cookie = new_default_cookie;
     },
     get: function(name, opts) {
-      opts = getOptions(opts);
+      if (name === undefined) return this.all(opts);
 
       var document_cookie = document.cookie;
       var cookies = (document_cookie && document_cookie !== '') ? document_cookie.split(/\s*;\s*/) : [];
@@ -55,6 +55,20 @@ var cookies = (function() {
       opts = getOptions(opts);
 
       this.set(name, '', {expires: -1});
+    },
+    all: function(opts) {
+      opts = getOptions(opts);
+
+      var cookies = {};
+      var document_cookie = document.cookie;
+      var cookies_list = (document_cookie && document_cookie !== '') ? document_cookie.split(/\s*;\s*/) : [];
+      var cookies_length = cookies_list.length;
+      for (var i = 0; i < cookies_length; i++) {
+        var cookie = cookies_list[i];
+        var cookie_parts = cookie.split('=');
+        var cookie_value = cookie_parts.slice(1).join('=');
+        cookies[cookie_parts[0]] = opts.raw ? cookie_value : decodeURIComponent(cookie_value);
+      }
     }
   };
 })();
