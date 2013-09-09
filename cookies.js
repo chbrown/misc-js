@@ -69,6 +69,7 @@ var cookies = (function() {
         var cookie_value = cookie_parts.slice(1).join('=');
         cookies[cookie_parts[0]] = opts.raw ? cookie_value : decodeURIComponent(cookie_value);
       }
+      return cookies;
     }
   };
 })();
