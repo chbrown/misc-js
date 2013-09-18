@@ -1,6 +1,9 @@
-// Copyright 2012-2013, Christopher Brown <io@henrian.com>, MIT Licensed
-// https://github.com/chbrown/misc-js :: cookies.js
 //"use strict"; /*jslint indent: 2 */
+/** Copyright 2012-2013, Christopher Brown <io@henrian.com>, MIT Licensed
+
+https://raw.github.com/chbrown/misc-js/master/cookies.js
+
+*/
 var cookies = (function() {
   function extend(target, source) {
     for (var key in source) {
