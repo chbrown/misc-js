@@ -14,6 +14,7 @@ var cookies = (function() {
     return target;
   }
 
+  var epoch = new Date(0);
   var default_cookie = {};
 
   function getOptions(opts) {
@@ -46,7 +47,7 @@ var cookies = (function() {
       var encode = opts.raw ? function(s) { return s; } : encodeURIComponent;
 
       var pairs = [[encode(name), encode(value.toString())]];
-      if (opts.expires) pairs.push(['expires', opts.expires.toUTCString()]);
+      if (opts.expires) pairs.push(['expires', opts.expires.toUTCString ? opts.expires.toUTCString() : opts.expires]);
       if (opts.path) pairs.push(['path', opts.path]);
       if (opts.domain) pairs.push(['domain', opts.domain]);
       if (opts.secure) pairs.push(['secure']);
@@ -57,7 +58,7 @@ var cookies = (function() {
     del: function(name, opts) {
       opts = getOptions(opts);
 
-      this.set(name, '', {expires: -1});
+      this.set(name, '', {expires: epoch});
     },
     all: function(opts) {
       opts = getOptions(opts);
