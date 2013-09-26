@@ -15,7 +15,7 @@ E.g., with jQuery, underscore.js:
 
     "use strict"; /*jslint indent: 2 */ /*globals $, _ */
 
-## jquery.autocomplete.js
+## jquery-autocomplete.js
 
 Copyright 2011-2012 Christopher Brown, MIT License
 
@@ -41,65 +41,43 @@ Then call:
     $('input[data-autocomplete]').ac();
     // the actual Autocomplete object will be available at each element's .data('autocomplete') key
 
-## jquery.flags.js
+## jquery-flags.js
 
 Copyright 2012 Christopher Brown, MIT License
 
-Like those "Sign here" post-its, this plug-in is intended to provide element level flash messages/feedback.
+Like those "Sign here" post-its, this plugin is intended to provide element level flash messages/feedback.
 It's absolutely positioned, so you needn't put dummy "submit-debug" spans in your html just to provide a little feedback.
 
     $('#submit').flag({
-      update: true, // change the text if there's already a flag on #submit
       anchor: 'r', // put on the right side of the #submit element
-      align: 'm', // vertical-align: middle
       html: 'This element needs <em>attention</em>', // uses html()
       // text: 'So does this one.', // for text(), if you play safe like that
-      fade: 5000 // auto fadeOut() after five seconds.
+      fade: 5000 // hide after five seconds.
     });
 
-All the arguments above are optional, and have the defaults shown above (except `html`, which has the default "!!!").
+The `anchor` parameter defaults to 'r', and must be one of 't|r|b|l'. If `fade` is not specified, the flag will remain visible until clicked.
 
-- `update` determines whether or not to add the flag, or replace an existing flag that is already attached to that element
-- `anchor` is one of `trbl` -- at the moment, only `l` and `r` are supported. Determines what side of the element the flag appears on.
-- `align` is one of `lcrtmb` -- at the moment, only `t`, `m`, and `b` are supported.
-- `html` is used the content of the flag.
-
-If you use only a string, it will use that as the `html` argument.
+If you use only a string, it's like calling it with `{text: "that-string"}`.
 
     $('#submit').flag('Failed');
 
-The latest flag object is attached as $el.data('flag').
+If you want to hide or update the flag programmatically, use `$.flag` instead, which returns a Flag object.
 
-    $('#submit').data('flag').$flag.fadeOut('slow');
+    var flag = $.flag(('#submit'), {text: 'Failed'});
+    flag.$el.fadeOut(10000);
 
-Here's the basic LESS css required for this plugin (recent update removes styling from the javascript):
+Use something like this in your CSS:
 
     .flag {
       position: absolute;
       background-color: black;
-      border-radius: 4px;
-      padding: 2px;
+      border-radius: 3px;
+      padding: 2px 6px;
       color: white;
-      font-size: 90%;
-      // like a diamond -- half-diameter measure
-      .triangle {
-        display: inline-block;
-        position: absolute;
-        border: 6px solid transparent;
-        width: 0;
-        height: 0;
-      }
-      .subflag {
-        display: inline-block;
-        span, a {
-          display: inline-block;
-          padding: 0 4px;
-        }
-        a {
-          background-color: white;
-          border-radius: 2px;
-        }
-      }
+    }
+    .flag .triangle {
+      position: absolute;
+      border: 6px solid transparent;
     }
 
 
