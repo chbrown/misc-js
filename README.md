@@ -158,3 +158,7 @@ Unless you have set `window.DEBUG = true` somewhere, `HandlebarsTemplates` will 
 
 * TemplatedView (extends Backbone.View)
 * TemplatedCollection (extends Backbone.Collection)
+
+## License
+
+Copyright (c) 2013 Christopher Brown. MIT Licensed.
