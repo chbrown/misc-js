@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Cookies Example</title>
+<link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+<script src="../cookies.js"></script>
+
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  font: 14px sans-serif;
+}
+label {
+  display: block;
+  font-weight: bold;
+}
+form {
+  display: inline-block;
+  margin: 10px;
+  vertical-align: top;
+
+}
+</style>
+
+
+<form id="get">
+  <label>Cookie name: <input name="name" /></label>
+</form>
+
+<form id="set">
+  <label>Cookie name: <input name="name" /></label>
+  <label>Cookie value: <input name="value" /></label>
+</form>
+
+<form id="del">
+  <label>Cookie name: <input name="name" /></label>
+</form>
+
+<form id="all"></form>
+
+<fieldset><legend>result</legend><div id="result"></div></fieldset>
+
+<!-- jquery makes the sandbox ui easier, but it's not required for cookies.js -->
+<script src="../static/lib/jquery.js"></script>
+<script>
+$('form[id]').each(function() {
+  var $contents = $(this).append('<button>' + this.id + '</button>').children();
+  $('<fieldset><legend>' + this.id + '</legend></fieldset>').appendTo(this).append($contents);
+});
+
+cookies.defaults = function() {
+  var one_month = new Date(new Date().getTime() + 31*24*60*60*1000);
+  return {path: '/', expires: one_month};
+};
+
+$('form').on('submit', function(ev) {
+  ev.preventDefault();
+  var params = {}
+  $(this).serializeArray().forEach(function(item) {
+    params[item.name] = item.value;
+  });
+  console.info('params', params);
+  var result = '';
+  if (this.id == 'get') {
+    result = cookies.get(params.name);
+    console.log('form#get', result);
+  }
+  else if (this.id == 'set') {
+    result = cookies.set(params.name, params.value);
+    console.log('form#set', result);
+  }
+  else if (this.id == 'del') {
+    result = cookies.del(params.name);
+    console.log('form#del', result);
+  }
+  else {
+    result = cookies.all();
+    console.log('form#all', result);
+  }
+
+  var text = JSON.stringify(result) || 'undefined';
+
+  $('#result').text(text);
+});
+</script>

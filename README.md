@@ -1,20 +1,75 @@
 # misc-js
 
-Custom client-side javascript libraries for use with jQuery, Backbone, and Handlebars.
+Client-side javascript libraries.
 
-* Too small to make into their own repositories.
-* Too big to keep copy and pasting.
 
-## Standards
+---
+## cookies.js (no dependencies)
 
-JSLint:
+Cookie manipulation (get/set/del/all) helper.
 
-    "use strict"; /*jslint indent: 2 */
+Loading this script exposes two global variables: `Cookies` (the class), and `cookies` (a singleton instance).
 
-E.g., with jQuery, underscore.js:
+All calls take an optional list of parameters after positional arguments.
 
-    "use strict"; /*jslint indent: 2 */ /*globals $, _ */
+* `expires`: Date
+* `path`: String
+* `domain`: String
+* `secure`: Boolean
+* `raw`: Boolean
+    - Not part of the cookie data, but controls how the cookie is stringified.
+    - Prevents `encodeURIComponent` being called on the given name and value.
 
+There are no defaults for these fields, but you can set site-wide defaults (well, whenever you use the `cookies` instance) like so:
+
+    cookies.defaults = function() {
+      var now = new Date();
+      var one_month_from_now = new Date(now.getTime() + 31*24*60*60*1000);
+      return {
+        path: '/',
+        expires: one_month_from_now
+      };
+    };
+
+Or if you want to just set the default `path`, for example, you can simply say:
+
+    cookies.defaults = {path: '/'};
+
+**API**
+
+| method | return type | description |
+|:-------|:------------|:------------|
+| `cookies.get(name [, options])` | String | get the value of a cookie by name (defers to all() if `name` is null or undefined |
+| `cookies.set(name, value [, options])` | null | set the string value of a cookie by name |
+| `cookies.del(name [, options])` | null | expire the cookie  by name and set its value to the empty string |
+| `cookies.all([options])` | Object | get all cookies as an object mapping names to values |
+| `cookies.defaults` | Object or Function | directly settable; if a function is used, will execute it every time defaults are needed |
+
+**Examples**
+
+See [doc/cookies.html](doc/cookies.html) for an example that uses all of these methods.
+
+Set a simple site-wide cookie:
+
+    cookies.set('user_id', '10089', {path: '/'});
+
+This has the same effect as the following:
+
+    cookies.defaults = {path: '/'};
+    cookies.set('user_id', '10089');
+
+Get it back:
+
+    var user_id = cookies.get('user_id');
+    // user_id will be a string or undefined (if you or the user deleted it since you set it)
+    console.log('user_id:', user_id);
+
+Get rid of it:
+
+    cookie.del('user_id');
+
+
+---
 ## jquery-autocomplete.js
 
 Copyright 2011-2012 Christopher Brown, MIT License
@@ -41,6 +96,8 @@ Then call:
     $('input[data-autocomplete]').ac();
     // the actual Autocomplete object will be available at each element's .data('autocomplete') key
 
+
+---
 ## jquery-flags.js
 
 Copyright 2012 Christopher Brown, MIT License
@@ -81,61 +138,7 @@ Use something like this in your CSS:
     }
 
 
-## cookies.js
-
-Adds a `cookies` variable to your global scope.
-
-### get cookie
-
-```javascript
-var user_id = cookies.get('user_id');
-// user_id will be undefined or a string
-```
-
-### add or set cookie (with options)
-
-```javascript
-var now = new Date().getTime();
-var one_month = new Date(now + 31*86400000);
-cookies.set('user_id', '10089', {expires: one_month, path: '/'});
-```
-
-Options when setting:
-
-* Date expires
-* String path
-* String domain
-* Boolean secure
-* Boolean raw
-    - Not part of the cookie data, but controls how the cookie is stringified.
-    - Prevents `encodeURIComponent` being called on the given name and value.
-
-### delete cookie
-
-```javascript
-cookie.del('user_id');
-```
-
-### set defaults
-
-Merge any `cookies.set` command with some default set of options.
-Can be either a static object or a function that returns an object.
-
-```javascript
-cookies.setDefault(function() {
-  var now = new Date().getTime();
-  var thirty_seconds = new Date(now + 30000);
-  return {expires: thirty_seconds};
-});
-```
-
-Or, more sanely and simply:
-
-```javascript
-cookies.setDefault({path: '/'});
-```
-
-
+---
 ## templating.js
 
 Templating helper for Backbone joined with Handlebars.
@@ -159,6 +162,18 @@ Unless you have set `window.DEBUG = true` somewhere, `HandlebarsTemplates` will 
 * TemplatedView (extends Backbone.View)
 * TemplatedCollection (extends Backbone.Collection)
 
+
+---
+## Development standards
+
+JSLint:
+
+    "use strict"; /*jslint indent: 2 */
+
+E.g., with jQuery, underscore.js:
+
+    "use strict"; /*jslint indent: 2 */ /*globals $, _ */
+
 ## License
 
-Copyright (c) 2013 Christopher Brown. MIT Licensed.
+Copyright (c) 2011-2013 Christopher Brown. MIT Licensed.
