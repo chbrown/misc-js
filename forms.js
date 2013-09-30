@@ -1,4 +1,4 @@
-"use strict"; /*jslint indent: 2 */ /*globals console */
+//"use strict"; /*jslint indent: 2 */
 /** Copyright (c) 2013 Christopher Brown <io@henrian.com>, MIT Licensed
 
 https://raw.github.com/chbrown/misc-js/master/forms.js
@@ -132,10 +132,10 @@ var Form = (function() {
     var tag = element.tagName.toLowerCase();
     if (tag == 'input') {
       if (element.type === 'checkbox') {
-        element.checked = consume(element.value);
+        element.checked = consume(element.value == 'on' ? true : element.value);
       }
       else if (element.type === 'radio') {
-        element.checked = consume(element.value);
+        element.checked = consume(element.value == 'on' ? true : element.value);
       }
       else { // (type =='text' || type == 'password' || ...)
         var input_val = pop();
@@ -176,8 +176,6 @@ var Form = (function() {
       }
     };
 
-    console.log('InputGroup.get', grouped_fields, fields);
-
     // handle special input[hidden] + checkbox case
     if (fields.length == 2 && fields[0].type == 'hidden' && fields[1].checked !== undefined) {
       return fields[1].checked ? fields[1].value : fields[0].value;
@@ -208,7 +206,6 @@ var Form = (function() {
     else {
       // value is mutable; and may become null
       elements.forEach(function(element) {
-        console.log('Input.set', element, value);
         value = Input.set(element, value);
       });
     }
@@ -249,7 +246,6 @@ var Form = (function() {
     // names: all the inputs with names, grouped by name
     var names = this.groupByName();
 
-    console.log('names', names);
     var value = {};
     for (var name in names) {
       value[name] = InputGroup.get(names[name]);
@@ -261,11 +257,10 @@ var Form = (function() {
     // group named inputs
     var names = this.groupByName();
 
-    console.log(this.container, 'set', value, 'names', names);
-
     for (var name in names) {
-      var result = InputGroup.set(names[name], value[name]);
-      console.log('InputGroup.set', names[name], 'value', value[name], 'result', result);
+      if (value.hasOwnProperty(name)) {
+        var result = InputGroup.set(names[name], value[name]);
+      }
     }
   };
 
