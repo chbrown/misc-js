@@ -138,7 +138,8 @@ var Form = (function() {
         element.checked = consume(element.value);
       }
       else { // (type =='text' || type == 'password' || ...)
-        element.value = pop();
+        var input_val = pop();
+        if (input_val !== undefined) element.value = input_val;
       }
     }
     else if (tag == 'select') {
@@ -149,7 +150,8 @@ var Form = (function() {
       }
     }
     else if (tag == 'textarea') {
-      element.value = pop();
+      var textarea_val = pop();
+      if (textarea_val !== undefined) element.value = textarea_val;
     }
     else {
       console.info('ignoring element with unsupported tag:', element);
@@ -160,21 +162,37 @@ var Form = (function() {
   var InputGroup = {};
   InputGroup.get = function(elements) {
     // returns single coalsced value (String | Array | null | ...)
-    var grouped_values = elements.map(Input.get);
-    var values = Array.prototype.concat.apply([], grouped_values);
+    var grouped_fields = elements.map(Input.get);
+    // fields is a list of {value: 'xyz', checked: false}-like objects
+    var fields = Array.prototype.concat.apply([], grouped_fields);
 
-    console.log('InputGroup.get', grouped_values, values);
+    var fieldValue = function(field) {
+      // not sure if this is the right treatment
+      if (field.checked !== undefined && field.value == 'on') {
+        return field.checked;
+      }
+      else {
+        return field.value;
+      }
+    };
+
+    console.log('InputGroup.get', grouped_fields, fields);
 
     // handle special input[hidden] + checkbox case
-    if (values.length == 2 && values[0].type == 'hidden' && values[1].checked !== undefined) {
-      return values[1].checked ? values[1].value : values[0].value;
+    if (fields.length == 2 && fields[0].type == 'hidden' && fields[1].checked !== undefined) {
+      return fields[1].checked ? fields[1].value : fields[0].value;
     }
-    else if (values.length) {
+    else if (fields.length) {
       // determine whether we should coerce to array, if:
       //   a) any input has input.array == true, OR
       //   b) there is more than one element in the group
-      var array = values.some(trueArrayProperty) || values.length > 1;
-      return array ? values.map(function(value) { return value.value; }) : values[0].value;
+      var array = fields.some(trueArrayProperty) || fields.length > 1;
+      if (array) {
+        return fields.map(fieldValue);
+      }
+      else {
+        return fieldValue(fields[0]);
+      }
     }
     else {
       return null;
@@ -188,10 +206,10 @@ var Form = (function() {
       // should we also do this?: if (elements[1].value != value) elements[0].value = value;
     }
     else {
-      // var value
+      // value is mutable; and may become null
       elements.forEach(function(element) {
-        var result = Input.set(element, value);
-        console.log('Input.set', element, value, 'result:', result);
+        console.log('Input.set', element, value);
+        value = Input.set(element, value);
       });
     }
   };

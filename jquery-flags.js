@@ -44,10 +44,6 @@ var Flag = (function($) {
   var full = {t: 'top', r: 'right', b: 'bottom', l: 'left', c: 'center', m: 'middle'};
 
   var template = '<div class="flag"><div class="content"></div><div class="triangle"></div></div>';
-  var defaults = {
-    anchor: 'r',
-    parent: document.body
-  };
 
   var Flag = function(target, opts) {
     /** new Flag: create a new flag object
@@ -77,7 +73,11 @@ var Flag = (function($) {
         Present the flag with this text (defers to html if both are present)
     */
     this.target = target;
-    this.opts = _.extend({}, defaults, opts);
+
+    this.opts = _.extend({
+      anchor: 'r',
+      parent: document.body
+    }, opts);
 
     // todo? support updating
     // var flag = $target.data('flag');
