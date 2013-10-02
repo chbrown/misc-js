@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Textarea Example</title>
+<link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+
+<style>
+body {
+  /*font-size: 12pt;*/
+}
+label span:first-child {
+  font-weight: bold;
+  display: block;
+}
+textarea {
+  line-height: 130%;
+  font: 9pt monospace;
+}
+button {}
+</style>
+
+<form>
+  <label><span>Textarea</span>
+    <!-- Snippet from jquery-flags.js (in parent directory) -->
+    <textarea name="text1" style="width: 500px">var Flag = (function($) {
+  var measureBox = function($el) {
+    return {
+      width: $el.width() +
+        parseInt($el.css('border-left-width'), 10) +
+        parseInt($el.css('border-right-width'), 10) +
+        parseInt($el.css('padding-left'), 10) +
+        parseInt($el.css('padding-right'), 10),
+      height: $el.height() +
+        parseInt($el.css('border-top-width'), 10) +
+        parseInt($el.css('border-bottom-width'), 10) +
+        parseInt($el.css('padding-top'), 10) +
+        parseInt($el.css('padding-bottom'), 10)
+    };
+  };
+  var opposite_of = {t: 'b', r: 'l', b: 't', l: 'r'}; // opposite sides
+  var full = {t: 'top', r: 'right', b: 'bottom', l: 'left', c: 'center', m: 'middle'};
+
+  var template = '<div class="flag"><div class="content"></div><div class="triangle"></div></div>';
+
+  var Flag = function(target, opts) {
+    /** new Flag: create a new flag object
+
+    Flag itself should predominantly use Underscore, and only require jQuery for DOM manipulation
+    */
+    this.target = target;
+
+    this.opts = _.extend({
+      anchor: 'r',
+      parent: document.body
+    }, opts);
+  }
+})($);</textarea>
+  </label>
+
+  <label><span>Submit</span>
+    <button>Print to console</button>
+  </label>
+</form>
+
+<script src="../static/lib/underscore.js"></script>
+<script src="../static/lib/jquery.js"></script>
+<script src="../textarea.js"></script>
+<script>
+var textarea = document.querySelector('textarea');
+var textarea_enhanced = Textarea.enhance(textarea);
+
+var shadow = textarea_enhanced.shadow;
+</script>
