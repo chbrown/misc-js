@@ -67,6 +67,66 @@ var Textarea = (function() {
     return div;
   };
 
+  var dentSelection = function(textarea, dedent, tab) {
+    /** dentSelection indents if dedent is false
+
+    support this.selectionDirection? I think that'd just entail indexOf instead of lastIndexOf
+
+    Edge case to handle: when your end selection is a line with only
+    whitespace, and you dedent it all out you'd want to indent it back with
+    the group, but once you hit 0-width on that line, the statelessness of
+    this mechanism means that selection will be forgotten. But we don't want
+    to select slightly into the next line, or otherwise if you triple-click,
+    the end selection would start to select the next line (which is bad!).
+
+    Other test cases:
+    1. Select from first line somewhere into document. Should indent all of first line.
+    2. Place cursor at beginning of line (0-width selection) -- should select to end of line.
+    3. Triple click some portion (so that the last newline is technically selected) -- should not shift line below.
+    */
+
+    // if we have selected all the way to the beginning, we also want to indent the beginning of the string
+    var dedent_pattern = new RegExp('(\n)' + tab, 'g');
+    var indent_pattern = new RegExp('(\n)', 'g');
+
+    // for begin, start at `selectionStart - 1` so that we don't catch the newline that the cursor is currently on
+    var begin = textarea.value.lastIndexOf('\n', textarea.selectionStart - 1);
+    // 0-width selections get special handling in case the cursor is sitting at the front of the line
+    var selectionWidth = textarea.selectionEnd - textarea.selectionStart;
+    var end = textarea.value.indexOf('\n', textarea.selectionEnd - (selectionWidth === 0 ? 0 : 1));
+
+    // shrink/expand to their respective ends of the documents if no newline was found
+    if (begin == -1) begin = 0;
+    if (end == -1) {
+      end = textarea.value.length;
+    }
+
+    // before + middle + end: '^blah\nblahblah' + '\nthisthis\nthatthat\nyesyes' + '\nsomething else'
+    var before = textarea.value.slice(0, begin);
+    var middle = textarea.value.slice(begin, end);
+    var after = textarea.value.slice(end);
+
+    // begin = 0 is special and I can't figure out a way to make regex multiline play nice
+    if (begin === 0) {
+      dedent_pattern = new RegExp('(^|\n)' + tab, 'g');
+      indent_pattern = new RegExp('(^|\n)', 'g');
+    }
+
+    if (dedent) {
+      // dedent
+      middle = middle.replace(dedent_pattern, '$1');
+      textarea.value = before + middle + after;
+      // again, special handling for begin = 0
+      textarea.setSelectionRange(begin === 0 ? 0 : begin + 1, begin + middle.length);
+    }
+    else {
+      // indent
+      middle = middle.replace(indent_pattern, '$1' + tab);
+      textarea.value = before + middle + after;
+      textarea.setSelectionRange(begin === 0 ? 0 : begin + 1, begin + middle.length);
+    }
+  };
+
   var Textarea = function(textarea, opts) {
     /** Textarea: tab and autoresize support
 
@@ -84,50 +144,23 @@ var Textarea = (function() {
     this.textarea = textarea;
 
 
-    this.initIndentation();
+    this.initTabListener();
     this.initResizeToFit();
   };
 
-  Textarea.prototype.initIndentation = function() {
+  Textarea.prototype.initTabListener = function() {
     /** set up indentation (tab-hijacking)
 
     References:
       * https://github.com/wjbryant/taboverride
     */
     var tab = this.opts.tab;
-    var dedent_re = new RegExp('\n' + tab, 'g');
-    var indent_re = new RegExp('\n', 'g');
-
     this.textarea.addEventListener('keydown', function(ev) {
       // 9 = tab
       if (ev.which == 9) {
         ev.preventDefault();
-
-        var begin = this.value.lastIndexOf('\n', this.selectionStart - 1);
-        var end = this.value.lastIndexOf('\n', this.selectionEnd);
-        if (end == begin) {
-          end = this.value.indexOf('\n', this.selectionEnd);
-        }
-
-        var before = this.value.slice(0, begin);
-        var middle = this.value.slice(begin, end);
-        var after = this.value.slice(end);
-
-        // support this.selectionDirection?
-        if (ev.shiftKey) {
-          // dedent
-          var dedented_middle = middle.replace(dedent_re, '\n');
-          this.value = before + dedented_middle + after;
-          this.setSelectionRange(begin + 1, begin + dedented_middle.length);
-        }
-        else {
-          // indent
-          var indented_middle = middle.replace(indent_re, '\n' + tab);
-          this.value = before + indented_middle + after;
-          this.setSelectionRange(begin + 1, begin + indented_middle.length);
-
-        }
-
+        // ev.shiftKey == true ? dedent : indent
+        dentSelection(this, ev.shiftKey, tab);
       }
     }, false);
 
