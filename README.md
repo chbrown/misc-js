@@ -3,6 +3,7 @@
 Client-side javascript libraries.
 
 
+
 ---
 ## cookies.js (no dependencies)
 
@@ -69,10 +70,69 @@ Get rid of it:
     cookie.del('user_id');
 
 
----
-## jquery-autocomplete.js
 
-Copyright 2011-2012 Christopher Brown, MIT License
+---
+## forms.js (no dependencies)
+
+Protocols:
+
+* `select` will produce a single string / null (unless there is another input with same name)
+* `select[multiple]` will always produce an array of strings
+* Two or more inputs with the same `[name]` attribute produce an array (of strings)
+* `input[type=hidden]` + `input[type=checkbox]` with same name uses the hidden input's value if the checkbox is unchecked (and it gets a little messy if the checkbox's value is unspecified (which defies the html5 spec, by the way).
+* Etc. (TODO: add more and document here)
+
+**Usage:** first, set up a form:
+
+    <div id="ownership">
+      <label>Pet Names</label>
+      <input name="petnames" />
+      <input name="petnames" />
+      <input name="petnames" />
+      <input name="petnames" />
+
+      <select name="breeds" name="multiple" />
+        <option>Reptile</option>
+        <option>Labrador</option>
+        <option>Collie</option>
+        <option>Aquatic</option>
+      </script>
+
+      <label>Sole-proprietor</label>
+      <input name="sole" type="hidden" value="not_sole_prop" />
+      <input name="sole" type="checkbox" value="is_sole_prop" />
+
+      <button>Submit</button>
+    </div>
+
+Now, hook it up:
+
+    <script>
+    var container = document.getElementById('#ownership');
+
+    var form = new Form(container);
+
+    form.set({
+      petnames: ['Lester', 'Crevice'],
+      breeds: ['Aquatic'], // can also be set as just a naked string, 'Aquatic'
+    });
+
+    document.querySelector('button').addEventListener('click', function() {
+      var result_object = form.get();
+      console.log(result_object.petnames);
+      // ['Lester', 'Crevice']
+      console.log(result_object.breeds, result_object.sole);
+    });
+    </script>
+
+The general idea is that inputs inside the same container with the same name are related, and by pairing different kinds of native inputs with the same name, we can create more complex data structures declaratively.
+Following the simple protocols, the data assignment / collection can be more generic.
+The intent is that more complex form needs can be handled pretty simply with this `Form` interface, which merely takes an element to initialize, and then returns an object when `get`ting data from the form, and receives an object when `set`ting the form.
+
+
+
+---
+## jquery-autocomplete.js (jQuery)
 
 jQuery UI's autocomplete is too bulky and hard to configure. The hoops you have to jump through, just to use use a little `<b>` markup in your results, it's crazy.
 
@@ -97,10 +157,9 @@ Then call:
     // the actual Autocomplete object will be available at each element's .data('autocomplete') key
 
 
----
-## jquery-flags.js
 
-Copyright 2012 Christopher Brown, MIT License
+---
+## jquery-flags.js (jQuery)
 
 Like those "Sign here" post-its, this plugin is intended to provide element level flash messages/feedback.
 It's absolutely positioned, so you needn't put dummy "submit-debug" spans in your html just to provide a little feedback.
@@ -138,8 +197,9 @@ Use something like this in your CSS:
     }
 
 
+
 ---
-## templating.js
+## templating.js (Underscore, jQuery, Backbone, Handlebars)
 
 Templating helper for Backbone joined with Handlebars.
 
@@ -149,7 +209,7 @@ Templating helper for Backbone joined with Handlebars.
 * TemplateManager.url = where to request templates if they're not in the cache
 * TemplateManager.extension = the dictionary to look up and store templates by name.
 * TemplateManager.querystring = set to '?t=123' to keep from pulling static templates from cache.
-* TemplateManager.compile = function (template_string) -> function (context) -> html
+* TemplateManager.compile = function(template_string) -> function(context) -> html
 
 ### Creates a global variable, `HandlebarsTemplates`:
 
@@ -163,17 +223,34 @@ Unless you have set `window.DEBUG = true` somewhere, `HandlebarsTemplates` will 
 * TemplatedCollection (extends Backbone.Collection)
 
 
+
 ---
-## Development standards
+## textarea.js (no dependencies)
 
-JSLint:
+When all you want is a little textarea that expands vertically to hold its contents, and handles tab keypresses like a code editor.
 
-    "use strict"; /*jslint indent: 2 */
+    <script src="/static/lib/textarea.js"></script>
+    <script>
+    Textarea.enhance(document.querySelector('textarea'));
+    </script>
 
-E.g., with jQuery, underscore.js:
+Off-the-cuff comparison:
 
-    "use strict"; /*jslint indent: 2 */ /*globals $, _ */
+|  | [`textarea.js`](textarea.js) | [CodeMirror](http://codemirror.net/) | [Ace](http://ace.c9.io/) |
+|:-----------------------------|:------|:-------|:-------|
+| Size                         | 11 KB | 228 KB | 546 KB |
+| Minified                     | 5 KB  | 108 KB | 303 KB |
+| Auto expand                  | yes   | yes    | no     |
+| Tab support                  | yes   | yes    | yes    |
+| Restyles text                | no    | yes    | yes    |
+| Code highlighter             | no    | yes    | yes    |
+| Requires spans to be inline  | no    | yes    | yes    |
+| Handles necessary CSS resets | yes   | no     | no     |
+| Homepage is animated         | no    | no     | yes    |
 
+
+
+---
 ## License
 
 Copyright (c) 2011-2013 Christopher Brown. MIT Licensed.
