@@ -91,7 +91,7 @@ Protocols:
       <input name="petnames" />
       <input name="petnames" />
 
-      <select name="breeds" name="multiple" />
+      <select name="breeds" multiple />
         <option>Reptile</option>
         <option>Labrador</option>
         <option>Collie</option>
