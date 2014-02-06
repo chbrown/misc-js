@@ -238,7 +238,7 @@ Off-the-cuff comparison:
 
 |  | [`textarea.js`](textarea.js) | [CodeMirror](http://codemirror.net/) | [Ace](http://ace.c9.io/) |
 |:-----------------------------|:------|:-------|:-------|
-| Size                         | 11 KB | 228 KB | 546 KB |
+| Size                         | 12 KB | 228 KB | 546 KB |
 | Minified                     | 5 KB  | 108 KB | 303 KB |
 | Auto expand                  | yes   | yes    | no     |
 | Tab support                  | yes   | yes    | yes    |
