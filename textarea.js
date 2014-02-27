@@ -100,6 +100,7 @@ var Textarea = (function() {
     var space = [];
     var match = null;
     var regex = /(^|\n)(\s+)/g;
+    // TODO: ignore totally empty lines
     while ((match = regex.exec(string)) !== null) {
       space.push(parseInt(match[2].length, 10));
     }
@@ -209,6 +210,7 @@ var Textarea = (function() {
       textarea.value = before + insert + after;
       var cursor = selectionStart + insert.length;
       textarea.setSelectionRange(cursor, cursor);
+      return true;
     }
     // don't do anything if there is no existing indent
     // don't do anything special on the very first line of the document
@@ -245,6 +247,10 @@ var Textarea = (function() {
     this.initTabListener();
     this.initReturnListener();
     this.initResizeToFit();
+
+    if (this.opts.poll) {
+      this.initValuePoll(this.opts.poll);
+    }
   };
 
   Textarea.prototype.initTabListener = function() {
@@ -272,10 +278,25 @@ var Textarea = (function() {
     var tab = this.opts.tab;
     this.el.addEventListener('keydown', function(ev) {
       if (ev.which == 13) {
-        ev.preventDefault(); // we'll put it in ourselves
-        autoindentNewline(this, ev.metaKey);
+        var handled = autoindentNewline(this, ev.metaKey);
+        if (handled) {
+          ev.preventDefault(); // we've put it in ourselves
+        }
       }
     }, false);
+  };
+
+  Textarea.prototype.initValuePoll = function(interval) {
+    var self = this;
+    // for a hash value -- just use the length
+    var last_value_hash = this.el.value.length;
+    setInterval(function() {
+      var current_value_hash = self.el.value.length;
+      if (current_value_hash != last_value_hash) {
+        self.resizeToFit();
+        last_value_hash = current_value_hash;
+      }
+    }, interval);
   };
 
   Textarea.prototype.initResizeToFit = function() {
@@ -308,11 +329,13 @@ var Textarea = (function() {
     var resizeToFit = this.resizeToFit.bind(this);
     // https://developer.mozilla.org/en-US/docs/Web/Reference/Events
     window.addEventListener('resize', resizeToFit, false);
+    document.addEventListener('readystatechange', resizeToFit, false);
     this.el.addEventListener('blur', resizeToFit, false);
     this.el.addEventListener('keyup', resizeToFit, false);
     this.el.addEventListener('change', resizeToFit, false);
     this.el.addEventListener('cut', resizeToFit, false);
     this.el.addEventListener('paste', resizeToFit, false);
+    this.el.addEventListener('input', resizeToFit, false);
     // maybe use https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
     // in the future once it's more widely supported
     // but for now, maybe poll the shadow div for changed height? (ewww, I know, polling)

@@ -32,6 +32,37 @@
         <span>Textarea</span>
         <!-- Snippet from jquery-flags.js (in parent directory) -->
         <textarea name="text1" style="width: 500px">
+          var query = {};
+          // take the easy outs
+          if (querystring === undefined || querystring === null || querystring === '') return query;
+          // querystring is something. We'll assume it's a string.
+          var parts = querystring.slice(1).split('*');
+          parts.forEach(function(part) {
+            // we treat `part = 'message='` differently from `part = 'message'`
+            var pair_parts = part.split('=');
+            var key = pair_parts[0];
+            var value = pair_parts[1];
+            // value will be undefined or a string, potentially empty, but never null
+            if (value === undefined) {
+              query[key] = null;
+            }
+            else {
+              query[key] = decodeURIComponent(value);
+            }
+          });</textarea>
+      </label>
+
+      <label><span>Source</span>
+        <button id="use_scriptsource">Use Script Source</button>
+      </label>
+
+      <label><span>Submit</span>
+        <button>Print to console</button>
+      </label>
+    </form>
+  </section>
+
+  <script type="text/plain" id="scriptsource">
         var Flag = (function($) {
           var measureBox = function($el) {
             return {
@@ -65,18 +96,20 @@
             }, opts);
           }
         })($);
-        </textarea>
-      </label>
+  </script>
 
-      <label><span>Submit</span>
-        <button>Print to console</button>
-      </label>
-    </form>
-  </section>
   <script>
   var textarea = document.querySelector('textarea');
-  var textarea_enhanced = Textarea.enhance(textarea, {autodedent: true});
+  var textarea_enhanced = Textarea.enhance(textarea, {autodedent: true, poll: 500});
 
-  var shadow = textarea_enhanced.shadow;
+  // var shadow = textarea_enhanced.shadow;
+
+  var scriptsource_button = document.getElementById('use_scriptsource')
+  scriptsource_button.addEventListener('click', function(ev) {
+    ev.preventDefault();
+
+    var scriptsource_string = document.getElementById('scriptsource').innerHTML;
+    textarea.value = scriptsource_string;
+  }, true);
   </script>
 </body>
