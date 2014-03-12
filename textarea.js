@@ -388,6 +388,9 @@ var Textarea = (function() {
     var shadow_style = window.getComputedStyle(this.shadow);
     var shadow_height = shadow_style.height;
 
+    // todo: if the user disables auto-expanding with max-height, make sure the shadow
+    // does not take up too much space
+
     if (!isNaN(max_height) && shadow_style.height > max_height) {
       this.el.style.overflow = 'auto';
       this.el.style.height = '';
