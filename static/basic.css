@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  padding: 20px;
+  font: 14px sans-serif;
+}
+section {
+  margin: 20px;
+}
+label {
+  display: block;
+  font-weight: bold;
+  margin: 10px 0;
+}
+label[x-name]:hover::after {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  content: "[name=" attr(x-name) "]";
+}
+label span:first-child {
+  font-weight: bold;
+  display: block;
+}
+form {
+  display: inline-block;
+  margin: 10px;
+  vertical-align: top;
+}
+textarea {
+  box-sizing: border-box;
+  /*line-height: 130%;*/
+  font: 8pt monospace;
+}

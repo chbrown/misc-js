@@ -1,115 +1,83 @@
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8">
-  <title>Textarea Example</title>
-  <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
-  <!-- dev: http://ghkl/misc-js/doc/textarea.html -->
+  <link href="../static/favicon.ico" type="image/x-icon" rel="icon">
+  <link href="../static/basic.css" type="text/css" rel="stylesheet">
 
-  <style>
-  body {
-    padding: 0;
-    margin: 0;
-  }
-  section {
-    margin: 20px;
-  }
-  label span:first-child {
-    font-weight: bold;
-    display: block;
-  }
-  textarea {
-    box-sizing: border-box;
-    /*line-height: 130%;*/
-    font: 8pt monospace;
-  }
-  </style>
+  <title>misc-js: textarea.js</title>
+  <script src="../static/lib/jquery.min.js"></script>
   <script src="../textarea.js"></script>
 </head>
 <body>
-  <section>
-    <form>
-      <label>
-        <span>Textarea</span>
-        <!-- Snippet from jquery-flags.js (in parent directory) -->
-        <textarea name="text1" style="width: 500px">
-          var query = {};
-          // take the easy outs
-          if (querystring === undefined || querystring === null || querystring === '') return query;
-          // querystring is something. We'll assume it's a string.
-          var parts = querystring.slice(1).split('*');
-          parts.forEach(function(part) {
-            // we treat `part = 'message='` differently from `part = 'message'`
-            var pair_parts = part.split('=');
-            var key = pair_parts[0];
-            var value = pair_parts[1];
-            // value will be undefined or a string, potentially empty, but never null
-            if (value === undefined) {
-              query[key] = null;
-            }
-            else {
-              query[key] = decodeURIComponent(value);
-            }
-          });</textarea>
-      </label>
-
-      <label><span>Source</span>
-        <button id="use_scriptsource">Use Script Source</button>
-      </label>
-
-      <label><span>Submit</span>
-        <button>Print to console</button>
-      </label>
-    </form>
-  </section>
-
-  <script type="text/plain" id="scriptsource">
-        var Flag = (function($) {
-          var measureBox = function($el) {
-            return {
-              width: $el.width() +
-                parseInt($el.css('border-left-width'), 10) +
-                parseInt($el.css('border-right-width'), 10) +
-                parseInt($el.css('padding-left'), 10) +
-                parseInt($el.css('padding-right'), 10),
-              height: $el.height() +
-                parseInt($el.css('border-top-width'), 10) +
-                parseInt($el.css('border-bottom-width'), 10) +
-                parseInt($el.css('padding-top'), 10) +
-                parseInt($el.css('padding-bottom'), 10)
-            };
-          };
-          var opposite_of = {t: 'b', r: 'l', b: 't', l: 'r'}; // opposite sides
-          var full = {t: 'top', r: 'right', b: 'bottom', l: 'left', c: 'center', m: 'middle'};
-
-          var template = '<div class="flag"><div class="content"></div><div class="triangle"></div></div>';
-
-          var Flag = function(target, opts) {
-            /** new Flag: create a new flag object
-
-            Flag itself should predominantly use Underscore, and only require jQuery for DOM manipulation
-            */
-            this.target = target;
-
-            this.opts = _.extend({
-              anchor: 'r',
-              parent: document.body
-            }, opts);
+  <form>
+    <label>
+      <span>Textarea</span>
+      <!-- Snippet from the jquery-flags.js script in parent directory -->
+      <textarea style="width: 500px">
+        var query = {};
+        // take the easy outs
+        if (querystring === undefined || querystring === null || querystring === '') return query;
+        // querystring is something. We'll assume it's a string.
+        var parts = querystring.slice(1).split('*');
+        parts.forEach(function(part) {
+          // we treat `part = 'message='` differently from `part = 'message'`
+          var pair_parts = part.split('=');
+          var key = pair_parts[0];
+          var value = pair_parts[1];
+          // value will be undefined or a string, potentially empty, but never null
+          if (value === undefined) {
+            query[key] = null;
           }
-        })($);
-  </script>
+          else {
+            query[key] = decodeURIComponent(value);
+          }
+        });
+      </textarea>
+    </label>
+
+    <label>
+      <span>Load from URL</span>
+      <select id="url_source">
+        <option>../angular-plugins.js</option>
+        <option>../cookies.js</option>
+        <option>../forms.js</option>
+        <option>../jquery-autocomplete.js</option>
+        <option>../jquery-flags.js</option>
+        <option>../jquery-panes.js</option>
+        <option>../jquery-persistance.js</option>
+        <option>../package.json</option>
+        <option>../templating.js</option>
+        <option>../textarea.js</option>
+        <option>../url.js</option>
+      </select>
+      <button type="button" id="load_url_source">Load into textarea</button>
+    </label>
+
+    <label>
+      <span>Export</span>
+      <button type="button" id="print_to_console">Print to console</button>
+    </label>
+  </form>
 
   <script>
   var textarea = document.querySelector('textarea');
-  var textarea_enhanced = Textarea.enhance(textarea, {autodedent: true, poll: 500});
+  var textarea_enhanced = Textarea.enhance(textarea);
 
-  // var shadow = textarea_enhanced.shadow;
+  var loadUrl = function(url) {
+    $.get(url, function(data, textStatus, jqXHR) {
+      textarea.value = data;
+      textarea.dispatchEvent(new Event('input'));
+    }, 'text');
+  }
 
-  var scriptsource_button = document.getElementById('use_scriptsource')
-  scriptsource_button.addEventListener('click', function(ev) {
-    ev.preventDefault();
+  $('#load_url_source').on('click', function(ev) {
+    var url = $('#url_source').val()
+    loadUrl(url);
+  });
 
-    var scriptsource_string = document.getElementById('scriptsource').innerHTML;
-    textarea.value = scriptsource_string;
-  }, true);
+  $('#print_to_console').on('click', function(ev) {
+    console.log(textarea.value);
+  });
+
   </script>
 </body>

@@ -1,96 +1,85 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<title>Forms Example</title>
-<link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+<head>
+  <meta charset="utf-8">
+  <link href="../static/favicon.ico" type="image/x-icon" rel="icon">
+  <link href="../static/basic.css" type="text/css" rel="stylesheet">
 
-<style>
-body {
-  margin: 0;
-  padding: 20px;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-label[x-name]:hover::after {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  content: "[name=" attr(x-name) "]";
-}
-</style>
+  <title>misc-js: forms.js</title>
+  <script src="../static/lib/jquery.min.js"></script>
+  <script src="../forms.js"></script>
+</head>
+<body>
+  <form id="form1">
+    <label>Text input
+      <input type="text" value="first things" name="text1" />
+    </label>
 
-<form id="form1">
-  <label>Text input
-    <input type="text" value="first things" name="text1" />
-  </label>
+    <label>Implictly text
+      <input value="nothing" name="text2" />
+    </label>
+    <label>Also implictly text
+      <input value="again" name="text2" />
+    </label>
 
-  <label>Implictly text
-    <input value="nothing" name="text2" />
-  </label>
-  <label>Also implictly text
-    <input value="again" name="text2" />
-  </label>
+    <label>
+      <div>Single select</div>
+      <select name="singlesel">
+        <option value="letter_a">A</option>
+        <option value="letter_b">B</option>
+        <option value="letter_c">C</option>
+      </select>
+    </label>
 
-  <label>Single select
-    <select name="singlesel">
-      <option value="letter_a">A</option>
-      <option value="letter_b">B</option>
-      <option value="letter_c">C</option>
-    </select>
-  </label>
+    <label>
+      <div>Multiple select</div>
+      <select name="multisel" multiple style="height: 100px; width: 75px">
+        <option value="number_1">One</option>
+        <option value="number_2">Two</option>
+        <option value="number_3">Three</option>
+        <option value="number_4">Four</option>
+        <option value="number_5">Five</option>
+      </select>
+    </label>
 
-  <label>Multiple select
-    <select name="multisel" multiple>
-      <option value="number_1">One</option>
-      <option value="number_2">Two</option>
-      <option value="number_3">Three</option>
-      <option value="number_4">Four</option>
-      <option value="number_5">Five</option>
-    </select>
-  </label>
+    <button>Print to console</button>
+  </form>
 
-  <button>Print to console</button>
-</form>
+  <fieldset id="form1values">
+    <legend>form1values</legend>
 
-<fieldset id="form1values">
-  <legend>form1values</legend>
+    <pre></pre>
 
-  <pre></pre>
+    <button>set form1</button>
+  </fieldset>
 
-  <button>set form1</button>
-</fieldset>
-
-<script src="../static/lib/underscore.js"></script>
-<script src="../static/lib/jquery.js"></script>
-<script src="../forms.js"></script>
-<script>
-// init stuff
-$(function() {
-  $('label [name]').each(function() {
-    // propagate each input's name up to the label above it so that our debug :hover::after css works
-    $(this).closest('label').attr('x-name', $(this).attr('name'));
+  <script>
+  // init stuff
+  $(function() {
+    $('label [name]').each(function() {
+      // propagate each input's name up to the label above it so that our debug :hover::after css works
+      $(this).closest('label').attr('x-name', $(this).attr('name'));
+    });
   });
-});
 
-$('form').on('submit', function(ev) {
-  ev.preventDefault();
-  var container = $(this)[0];
-  result = new Form(container).get();
-  console.log('form.on(submit) -> get():', result);
-});
+  $('form').on('submit', function(ev) {
+    ev.preventDefault();
+    var container = $(this)[0];
+    result = new Form(container).get();
+    console.log('form.on(submit) -> get():', result);
+  });
 
-var form1values = {
-  text1: 'touchy',
-  text2: ['lucky', 'stripes'],
-  singlesel: 'letter_b',
-  multisel: ['number_3', 'number_5']
-};
-$('#form1values pre').text(JSON.stringify(form1values));
-$('#form1values button').on('click', function() {
-  var container = $('#form1')[0];
-  var form = new Form(container);
-  result = form.set(form1values);
-  console.log('#form1.set():', result);
-});
-</script>
+  var form1values = {
+    text1: 'touchy',
+    text2: ['lucky', 'stripes'],
+    singlesel: 'letter_b',
+    multisel: ['number_3', 'number_5']
+  };
+  $('#form1values pre').text(JSON.stringify(form1values));
+  $('#form1values button').on('click', function() {
+    var container = $('#form1')[0];
+    var form = new Form(container);
+    result = form.set(form1values);
+    console.log('#form1.set():', result);
+  });
+  </script>
+</body>

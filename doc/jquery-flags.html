@@ -1,86 +1,89 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<title>jQuery Flags Example</title>
-<link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+<head>
+  <meta charset="utf-8">
+  <link href="../static/favicon.ico" type="image/x-icon" rel="icon">
+  <link href="../static/basic.css" type="text/css" rel="stylesheet">
 
-<style>
-/* jquery-flags.js: recommended css */
-.flag {
-  position: absolute;
-  background-color: black;
-  border-radius: 3px;
-  padding: 2px 6px;
-  color: white;
-}
-.flag .triangle {
-  position: absolute;
-  border: 6px solid transparent;
-}
+  <title>misc-js: jquery-flags.js</title>
+  <script src="../static/lib/jquery.min.js"></script>
+  <script src="../jquery-flags.js"></script>
+  <style>
+  /* jquery-flags.js: recommended css */
+  .flag {
+    position: absolute;
+    background-color: black;
+    border-radius: 3px;
+    padding: 2px 6px;
+    color: white;
+  }
+  .flag .triangle {
+    position: absolute;
+    border: 6px solid transparent;
+  }
 
 
-/* local css */
-/* * { box-sizing: border-box; } */
-body {
-  margin: 0;
-  padding-bottom: 50px;
-}
+  /* local css */
+  /* * { box-sizing: border-box; } */
+  body {
+    margin: 0;
+    padding-bottom: 50px;
+  }
 
-#abspos {
-  position: absolute;
-  top: 70px;
-  left: 200px;
-  background-color: #FDFDFD;
-  border: 1px solid gray;
-  padding: 10px;
-}
+  #abspos {
+    position: absolute;
+    top: 70px;
+    left: 200px;
+    background-color: #FDFDFD;
+    border: 1px solid gray;
+    padding: 10px;
+  }
 
-#fixpos {
-  position: fixed;
-  top: 10px;
-  width: 100%;
-  background-color: #EDFDED;
-  border: 1px solid #555;
-  padding: 5px;
-}
+  #fixpos {
+    position: fixed;
+    top: 10px;
+    width: 100%;
+    background-color: #EDFDED;
+    border: 1px solid #555;
+    padding: 5px;
+  }
 
-#defpos {
-  border: 1px solid #699;
-  padding: 20px;
-  margin: 20px;
-  background-color: #FAF1F1;
-  font-size: 4em;
-}
-</style>
+  #defpos {
+    border: 1px solid #699;
+    padding: 20px;
+    margin: 20px;
+    background-color: #FAF1F1;
+    font-size: 4em;
+  }
+  </style>
+</head>
+<body>
+  <div id="fixpos">
+    <div style="width: 200px; height: 150px;">This div is fixed positioned.</div>
+  </div>
 
-<div id="fixpos">
-  <div style="width: 200px; height: 150px;">This div is fixed positioned.</div>
-</div>
+  <div id="abspos">
+    <div style="width: 200px; height: 150px;">This div is absolutely positioned!</div>
+  </div>
 
-<div id="abspos">
-  <div style="width: 200px; height: 150px;">This div is absolutely positioned!</div>
-</div>
+  <div id="defpos">
+    Broken words written restlessly, touched, typed, forlorn, unsaid. Looking down, from above, scanning, wanting. Too many here, too many to have all in one place.
+    Letting them breathe, these words, won't they return for more if I just let them lie?
+    Skip a step, turn away, turn back and touch touch touch trimble type tug at that capacity, ineffable, braking for an envisaged blockage, but there was none there.
+    <button>You could click this</button>
+  </div>
 
-<div id="defpos">
-Broken words written restlessly, touched, typed, forlorn, unsaid. Looking down, from above, scanning, wanting. Too many here, too many to have all in one place.
-Letting them breathe, these words, won't they return for more if I just let them lie?
-Skip a step, turn away, turn back and touch touch touch trimble type tug at that capacity, ineffable, braking for an envisaged blockage, but there was none there.
-<button>You could click this</button>
-</div>
+  <script>
+  $('#abspos').flag({text: 'look up here!', anchor: 't'});
+  $('#abspos').flag({text: 'yes, it is! wonderful, that', anchor: 'r'});
+  $('#abspos').flag({text: 'so awesome, right?', anchor: 'l', gravity: 't'});
+  $('#abspos').flag({text: 'mmmhmmm', anchor: 'b'});
 
-<script src="../static/lib/underscore.js"></script>
-<script src="../static/lib/jquery.js"></script>
-<script src="../jquery-flags.js"></script>
-<script>
-$('#abspos').flag({text: 'look up here!', anchor: 't'});
-$('#abspos').flag({text: 'yes, it is! wonderful, that', anchor: 'r'});
-$('#abspos').flag({text: 'so awesome, right?', anchor: 'l', gravity: 't'});
-$('#abspos').flag({text: 'mmmhmmm', anchor: 'b'});
+  $('#fixpos').flag({text: 'hey! come back!', anchor: 'b'});
 
-$('#fixpos').flag({text: 'hey! come back!', anchor: 'b'});
-
-$('#defpos').flag({text: 'so long, sucker.', anchor: 'b'});
-$('#defpos button').flag({text: 'but... will you?', anchor: 'r'});
-$('#defpos button').click(function(ev) {
-  $(ev.target).flag({text: 'oh, okay.', anchor: 'b', fade: 1000});
-});
-</script>
+  $('#defpos').flag({text: 'so long, sucker.', anchor: 'b'});
+  $('#defpos button').flag({text: 'but... will you?', anchor: 'r'});
+  $('#defpos button').click(function(ev) {
+    $(ev.target).flag({text: 'oh, okay.', anchor: 'b', fade: 1000});
+  });
+  </script>
+</body>
