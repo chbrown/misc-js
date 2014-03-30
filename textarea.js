@@ -1,5 +1,5 @@
 /*jslint browser: true */
-/** Copyright (c) 2013 Christopher Brown <io@henrian.com>, MIT Licensed
+/** Copyright 2013-2014 Christopher Brown <io@henrian.com>, MIT Licensed
 
 https://raw.github.com/chbrown/misc-js/master/textarea.js
 http://chbrown.github.io/misc-js/textarea.js

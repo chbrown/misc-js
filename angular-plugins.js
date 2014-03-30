@@ -1,4 +1,9 @@
-/*jslint browser: true */ /*globals angular, Event */
+/*jslint browser: true */ /*globals angular */
+/** Copyright 2012-2014, Christopher Brown <io@henrian.com>, MIT Licensed
+
+https://raw.github.com/chbrown/misc-js/master/angular-plugins.js
+
+*/
 angular.module('misc-js/angular-plugins', [])
 // # Filters
 .filter('trust', function($sce) {
@@ -116,11 +121,20 @@ angular.module('misc-js/angular-plugins', [])
   /** Only use this if you've loaded misc-js/textarea.js! */
   return {
     restrict: 'A',
-    link: function(scope, el, attrs) {
+    require: '?ngModel',
+    link: function(scope, el, attrs, ngModel) {
       // enhance textarea (check if it's a textarea)
       var textarea = el[0];
       if (textarea.tagName.toLowerCase() == 'textarea') {
         Textarea.enhance(textarea);
+      }
+
+      if (ngModel) {
+        // I think the built-in ng-model will handle actually setting the value?
+        ngModel.$render = function() {
+          // jslint with browser: true really ought to recognize Event
+          textarea.dispatchEvent(new Event('input'));
+        };
       }
     }
   };
