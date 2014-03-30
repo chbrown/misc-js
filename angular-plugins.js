@@ -126,15 +126,26 @@ angular.module('misc-js/angular-plugins', [])
       // enhance textarea (check if it's a textarea)
       var textarea = el[0];
       if (textarea.tagName.toLowerCase() == 'textarea') {
-        Textarea.enhance(textarea);
+        if (window.Textarea) {
+          window.Textarea.enhance(textarea);
+        }
+        else {
+          console.error('Cannot enhance <textarea> without first loading textarea.js', textarea);
+        }
       }
 
       if (ngModel) {
         // I think the built-in ng-model will handle actually setting the value?
         ngModel.$render = function() {
           // jslint with browser: true really ought to recognize Event
+          textarea.value = ngModel.$viewValue;
           textarea.dispatchEvent(new Event('input'));
         };
+        el.on('blur keyup change', function() {
+          scope.$apply(function() {
+            ngModel.$setViewValue(textarea.value);
+          });
+        });
       }
     }
   };
