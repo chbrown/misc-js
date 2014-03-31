@@ -404,12 +404,13 @@ angular.module('misc-js/angular-plugins', [])
   var container = angular.element(document.getElementById('flash'));
   var check = function() {
     if (container.children().length === 0) {
-      container.hide();
+      container.css('display', 'none');
     }
   };
   var add = function(html) {
     var el = angular.element(html);
-    container.append(el).show();
+    // .show() ...
+    container.append(el).css('display', '');
     return el;
   };
   var addTemporarily = function(html, timeout) {
