@@ -33,12 +33,11 @@ angular.module('misc-js/angular-plugins', [])
       '<span class="summary" style="opacity: 0.5" ng-hide="expanded" ng-click="expanded = true"></span>' +
       '<span class="full" ng-show="expanded" ng-click="expanded = false" ng-transclude></span>',
     transclude: true,
-    scope: {
-      expanded: false,
-    },
+    scope: {},
     link: function(scope, el, attrs) {
       var summary_el = el.children().eq(0);
       var full_el = el.children().eq(1);
+      scope.expanded = false;
 
       // var content = el.text().trim();
       var content = full_el.text().trim();
