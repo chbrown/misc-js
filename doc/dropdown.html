@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <link href="../static/favicon.ico" type="image/x-icon" rel="icon">
+  <link href="../static/basic.css" type="text/css" rel="stylesheet">
+  <!-- dev: http://ghkl/misc-js/doc/dropdown.html -->
+  <!-- pub: https://rawgit.com/chbrown/master/misc-js/doc/dropdown.html -->
+  <title>misc-js: dropdown.js</title>
+  <script src="../domlib.js"></script>
+  <script src="../dropdown.js"></script>
+  <style>
+  .dropdown {
+    margin: 0 2px;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #CCC;
+  }
+  .dropdown li {
+    padding: 1px;
+    cursor: default;
+  }
+  .selected {
+    background-color: pink;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <div>Data</div>
+    <textarea id="data" rows="3"></textarea>
+  </header>
+
+  <main>
+    <div>
+      <b>Dropdown</b>
+      <!-- <span>(preselect: <span id="selection"></span>)</span> -->
+    </div>
+    <input id="query">
+  </main>
+
+
+  <!-- jquery makes the sandbox ui easier, but it's not required for cookies.js -->
+  <script src="../static/lib/jquery.min.js"></script>
+  <script>
+  var data_el = document.getElementById('data');
+  var query_el = document.getElementById('query');
+  var selection_el = document.getElementById('selection');
+
+  var dropdown = Dropdown.attach(query_el);
+  dropdown.on('change', function(query) {
+    var query_re = new RegExp(query, 'gi');
+    var options = [];
+    data_el.value.split(/\n+/).filter(function(datum) {
+      if (datum.match(query_re)) {
+        options.push({label: datum, value: datum}); // .toLowerCase()
+      }
+    });
+    // simulate ajax-y latency
+    setTimeout(function() {
+      dropdown.setOptions(options, query)
+    }, 100);
+  });
+  // dropdown.on('preselect', function(value) {
+  //   selection_el.innerHTML = value;
+  // });
+  dropdown.on('select', function(value) {
+    query_el.value = value;
+  });
+
+  // sandbox stuff
+  function initialize() {
+    data_el.value = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Puerto Rico', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'Washington D.C.', 'West Virginia', 'Wisconsin', 'Wyoming'].join('\n');
+  }
+  initialize();
+
+  </script>
+</body>
