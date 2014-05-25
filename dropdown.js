@@ -149,6 +149,7 @@ var Dropdown = {};
     //   results_el.removeChild(this.results_el.lastChild);
     // }
     this.options.forEach(function(option) {
+      // label can be either a string or a DOM element
       var li = DOMLib.El('li', [option.label]);
       li.dataset.value = option.value;
       results_el.appendChild(li);
@@ -164,7 +165,6 @@ var Dropdown = {};
       self.preselect(null);
     });
     results_el.addEventListener('mousedown', function(event) {
-      console.log('mousedown', event);
       if (event.target.parentNode == results_el) {
         self.preselect(event.target);
         self.selected();
