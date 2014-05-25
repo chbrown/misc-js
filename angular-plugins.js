@@ -374,14 +374,14 @@ angular.module('misc-js/angular-plugins', [])
 .directive('mapObject', function() {
   /** Use like:
 
-      <table map-object="result.details"></map>
+      <table map-object="result.details"></table>
   */
   return {
     restrict: 'A',
     template:
       '<table class="map">' +
       '  <tr ng-repeat="(key, val) in mapObject">' +
-      '    <td>{{key}}</td><td>{{val}}</td>' +
+      '    <td ng-bind="key"></td><td ng-bind="val"></td>' +
       '  </tr>' +
       '</table>',
     replace: true,
