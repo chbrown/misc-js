@@ -53,6 +53,11 @@ var Dropdown = {};
     */
     DOMLib.EventEmitter.call(this);
     this.input_el = input_el;
+    // initialize results element, even though we don't use it yet
+    this.results_el = DOMLib.El('ul', {'class': 'dropdown', style: 'position: absolute; display: none'});
+    // insert results element as a sibling to the input element
+    //   if input_el.nextSibling is null, this works just like .appendChild
+    this.input_el.parentNode.insertBefore(this.results_el, this.input_el.nextSibling);
 
     this.input_el.addEventListener('keydown', this.keydown.bind(this));
     this.input_el.addEventListener('keyup', this.keyup.bind(this));
@@ -128,47 +133,35 @@ var Dropdown = {};
   };
 
   Controller.prototype.setOptions = function(options, query) {
-    this.options = options;
     // set this.query so that we know when the input differs from the current query
     this.query = query;
-    // this.results_el.show(); // only need to show it in case we didn't just create it
 
-    if (this.results_el === undefined) {
-      // this initialization only runs once
-      this.results_el = DOMLib.El('ul', {'class': 'dropdown', style: 'position: absolute'});
-      // insert results element as a sibling to the input element
-      // if input_el.nextSibling is null, this works just like .appendChild
-      this.input_el.parentNode.insertBefore(this.results_el, this.input_el.nextSibling);
-    }
-
-    // var limit = ($(window).height() - position.top) / 19 | 0;
     // clear
     var results_el = this.results_el.cloneNode(false);
-    results_el.style.display = 'block';
+    results_el.style.display = options.length > 0 ? 'block' : 'none';
     // while (this.results_el.lastChild) {
     //   results_el.removeChild(this.results_el.lastChild);
     // }
-    this.options.forEach(function(option) {
+    options.forEach(function(option) {
       // label can be either a string or a DOM element
       var li = DOMLib.El('li', [option.label]);
       li.dataset.value = option.value;
+
+      // I wish I could listen for mouseover / mousedown higher up, but it's harder,
+      // since it's hard to listen at a certain level
+      li.addEventListener('mouseover', function(event) {
+        self.preselect(li);
+      });
+      li.addEventListener('mousedown', function(event) {
+        self.preselect(li);
+        self.selected();
+      });
       results_el.appendChild(li);
     });
 
     var self = this;
-    results_el.addEventListener('mouseover', function(event) {
-      if (event.target.parentNode == results_el) {
-        self.preselect(event.target);
-      }
-    });
     results_el.addEventListener('mouseout', function(event) {
       self.preselect(null);
-    });
-    results_el.addEventListener('mousedown', function(event) {
-      if (event.target.parentNode == results_el) {
-        self.preselect(event.target);
-        self.selected();
-      }
     });
 
     // MDN: var replacedNode = parentNode.replaceChild(newChild, oldChild);
