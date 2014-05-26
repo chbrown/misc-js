@@ -3,12 +3,14 @@
   <meta charset="utf-8">
   <link href="../static/favicon.ico" type="image/x-icon" rel="icon">
   <link href="../static/basic.css" type="text/css" rel="stylesheet">
-
-  <title>misc-js: jquery-flags.js</title>
+  <!-- dev: http://ghkl/misc-js/doc/flags.html -->
+  <!-- pub: https://rawgit.com/chbrown/misc-js/master/doc/flags.html -->
+  <title>misc-js: flags.js</title>
   <script src="../static/lib/jquery.min.js"></script>
-  <script src="../jquery-flags.js"></script>
+  <script src="../domlib.js"></script>
+  <script src="../flags.js"></script>
   <style>
-  /* jquery-flags.js: recommended css */
+  /* flags.js: recommended css */
   .flag {
     position: absolute;
     background-color: black;
@@ -21,9 +23,7 @@
     border: 6px solid transparent;
   }
 
-
   /* local css */
-  /* * { box-sizing: border-box; } */
   body {
     margin: 0;
     padding-bottom: 50px;
@@ -72,18 +72,28 @@
     <button>You could click this</button>
   </div>
 
+  <p>Oh boy.</p>
+  <p>Oh lord.</p>
+  <p>How long can this go on?</p>
+  <p>How far?</p>
+  <p>How many?</p>
+  <p>How many do I need?</p>
+  <p>How many do I want?</p>
+  <p>How many do I?</p>
+
   <script>
-  $('#abspos').flag({text: 'look up here!', anchor: 't'});
-  $('#abspos').flag({text: 'yes, it is! wonderful, that', anchor: 'r'});
-  $('#abspos').flag({text: 'so awesome, right?', anchor: 'l', gravity: 't'});
-  $('#abspos').flag({text: 'mmmhmmm', anchor: 'b'});
 
-  $('#fixpos').flag({text: 'hey! come back!', anchor: 'b'});
+  $('#abspos').flag({content: 'look up here!', anchor: 't'});
+  $('#abspos').flag({content: 'yes, it is! wonderful, that', anchor: 'r'});
+  $('#abspos').flag({content: 'so awesome, right?', anchor: 'l', gravity: 't'});
+  $('#abspos').flag({content: 'mmmhmmm', anchor: 'b'});
 
-  $('#defpos').flag({text: 'so long, sucker.', anchor: 'b'});
-  $('#defpos button').flag({text: 'but... will you?', anchor: 'r'});
+  $('#fixpos').flag({content: 'hey! come back!', anchor: 'b'});
+
+  $('#defpos').flag({content: 'so long, sucker.', anchor: 'b'});
+  $('#defpos button').flag({content: 'but... will you?', anchor: 'r'});
   $('#defpos button').click(function(ev) {
-    $(ev.target).flag({text: 'oh, okay.', anchor: 'b', fade: 1000});
+    $(ev.target).flag({content: 'oh, okay.', anchor: 'b', fade: 1000});
   });
   </script>
 </body>
