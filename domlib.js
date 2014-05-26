@@ -59,9 +59,7 @@ var DOMLib = {};
     }
     return target;
   };
-  DOMLib.measureBox = function(el) {
-    // probably not optimal...
-    var style = getComputedStyle(el);
+  DOMLib.measureStyle = function(style) {
     return {
       width: atoi(style.width) +
         atoi(style.borderLeftWidth) +
@@ -75,6 +73,12 @@ var DOMLib = {};
         atoi(style.paddingTop) +
         atoi(style.paddingBottom)
     };
+  };
+  DOMLib.measureBox = function(el) {
+    /** measureBox(element) returns a {width: Number, height: Number} object. */
+    // probably not optimal...
+    var style = getComputedStyle(el);
+    return DOMLib.sumBoxStyle(style);
   };
   DOMLib.offset = function(el) {
     var rect = el.getBoundingClientRect();
@@ -106,8 +110,8 @@ var DOMLib = {};
     // 3. add children
     childNodes.forEach(function(childNode) {
       // 3a. automatically convert plain strings to text nodes
-      if (typeof childNode == 'string') {
-        childNode = document.createTextNode(childNode);
+      if (!(childNode instanceof Node)) {
+        childNode = document.createTextNode(String(childNode));
       }
       el.appendChild(childNode);
     });
