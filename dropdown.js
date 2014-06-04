@@ -108,7 +108,7 @@ var Dropdown = {};
     }
   };
   Controller.prototype.selected = function() {
-    this.emit('select', this.selected_el.dataset.value);
+    this.emit('select', this.selected_el.dataset.value, this.selected_el);
   };
   Controller.prototype.changed = function() {
     var query = this.input_el.value;
