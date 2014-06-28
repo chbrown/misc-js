@@ -1,7 +1,9 @@
-/*jslint browser: true */ /*globals angular */
+/*jslint browser: true */ /*globals angular, Event */
 /** Copyright 2012-2014, Christopher Brown <io@henrian.com>, MIT Licensed
 
 https://raw.github.com/chbrown/misc-js/master/angular-plugins.js
+
+jslint with 'browser: true' really ought to recognize 'Event' as a global type
 
 */
 angular.module('misc-js/angular-plugins', [])
@@ -122,6 +124,7 @@ angular.module('misc-js/angular-plugins', [])
   return {
     restrict: 'A',
     require: '?ngModel',
+    scope: {},
     link: function(scope, el, attrs, ngModel) {
       // enhance textarea (check if it's a textarea)
       var textarea = el[0];
@@ -135,12 +138,16 @@ angular.module('misc-js/angular-plugins', [])
       }
 
       if (ngModel) {
+        // console.log(textarea, 'ngModel', ngModel);
         // I think the built-in ng-model will handle actually setting the value?
         ngModel.$render = function() {
           // handle undefined input value by representing it as the empty string
           textarea.value = (ngModel.$viewValue === undefined || ngModel.$viewValue === null) ? '' : ngModel.$viewValue;
-          // jslint with 'browser: true' really ought to recognize 'Event' as a global type
-          textarea.dispatchEvent(new Event('input'));
+          // jump out of the $digest in case a different ng-model controller is listening
+          setTimeout(function() {
+            // but we need to trigger an 'input' event so that the enhanced Textarea triggers a resize
+            textarea.dispatchEvent(new Event('input'));
+          }, 0);
         };
         el.on('blur keyup change', function() {
           scope.$apply(function() {
