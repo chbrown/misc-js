@@ -253,4 +253,4 @@ Off-the-cuff comparison:
 ---
 ## License
 
-Copyright (c) 2011-2013 Christopher Brown. MIT Licensed.
+Copyright 2011-2015 Christopher Brown. [MIT Licensed](http://opensource.org/licenses/MIT).
