@@ -8,7 +8,7 @@ jslint with 'browser: true' really ought to recognize 'Event' as a global type
 */
 angular.module('misc-js/angular-plugins', [])
 // # Filters
-.filter('trust', function($sce) {
+.filter('trustHtml', function($sce) {
   /** ng-bind-html="something.html | trust" lets us easily trust something as html
 
   Here's how you could  completely disable SCE:
