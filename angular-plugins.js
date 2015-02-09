@@ -22,6 +22,11 @@ angular.module('misc-js/angular-plugins', [])
     return $sce.trustAsHtml(string);
   };
 })
+.filter('trustResourceUrl', function($sce) {
+  return function(string) {
+    return $sce.trustAsResourceUrl(string);
+  };
+})
 // # Directives
 .directive('help', function() {
   /**
