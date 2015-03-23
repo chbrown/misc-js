@@ -215,14 +215,6 @@ angular.module('misc-js/angular-plugins', [])
     }
   };
 })
-.directive('throbber', function() {
-  /** Presumably the rest of misc-js is installed nearby.
-  */
-  return {
-    restrict: 'E',
-    template: '<img src="/static/lib/img/throbber-24.gif">'
-  };
-})
 .directive('score', function() {
   /** Use like:
 
@@ -335,7 +327,7 @@ angular.module('misc-js/angular-plugins', [])
     },
   };
 })
-.directive('checkboxSequence', function($http) {
+.directive('checkboxSequence', function() {
   /** Use like:
 
     <ul checkbox-sequence>
@@ -493,7 +485,6 @@ angular.module('misc-js/angular-plugins', [])
       };
 
       scope.$on('flash', function(ev, value, timeout) {
-        // var throbber_el = angular.element('<img src="/static/lib/img/throbber-16.gif">');
         scope.add('...');
 
         // for some reason, .finally() doesn't get the promise's value,
