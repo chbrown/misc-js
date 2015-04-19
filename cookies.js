@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /** Copyright 2012-2014, Christopher Brown <io@henrian.com>, MIT Licensed
 
-Cookies v0.3.0 API:
+Cookies v0.3.1 API:
 
 `cookies.defaults`: settable option defaults. Often something like:
 
@@ -88,9 +88,9 @@ var Cookies = (function() {
 
   Cookies.prototype.del = function(name, opts) {
     opts = mergeDefaults(opts, this.defaults);
-
     // delete by setting the expirartion date to the UNIX epoch (Thu, 01 Jan 1970 00:00:00 GMT)
-    return this.set(name, '', {expires: new Date(0)});
+    opts.expires = new Date(0);
+    return this.set(name, '', opts);
   };
 
   Cookies.prototype.all = function(opts) {
