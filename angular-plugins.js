@@ -181,7 +181,6 @@ angular.module('misc-js/angular-plugins', [])
   return {
     restrict: 'A',
     require: '?ngModel',
-    scope: {},
     link: function(scope, el, attrs, ngModel) {
       // enhance textarea (check if it's a textarea)
       var textarea = el[0];
