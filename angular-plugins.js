@@ -326,65 +326,6 @@ angular.module('misc-js/angular-plugins', [])
     }
   };
 })
-// services
-.service('$flash', function($rootScope) {
-  // basically a $rootScope wrapper
-  return function(value, timeout) {
-    // value can be a string or a promise
-    // default to a 3 second timeout, but allow permanent flashes
-    if (timeout === undefined) timeout = 3000;
-    $rootScope.$broadcast('flash', value, timeout);
-  };
-})
-.directive('flash', function($timeout, $q) {
-  /**
-  Inject $flash and use like:
-      $flash('OMG it burns!')
-  or
-      $flash(asyncResultPromise)
-  */
-  return {
-    restrict: 'E',
-    template:
-      '<div class="flash" ng-show="messages.length > 0">' +
-        '<span ng-repeat="message in messages track by $index" ng-bind="message"></span>' +
-      '</div>',
-    replace: true,
-    scope: {messages: '&'},
-    link: function(scope, el, attrs) {
-      scope.messages = [];
-
-      scope.add = function(message) {
-        scope.messages.push(message);
-      };
-      scope.remove = function(message) {
-        var index = scope.messages.indexOf(message);
-        scope.messages.splice(index, 1);
-      };
-
-      scope.$on('flash', function(ev, value, timeout) {
-        scope.add('...');
-
-        // for some reason, .finally() doesn't get the promise's value,
-        // so we have to use .then(a, a)
-        var done = function(message) {
-          // so we recreate
-          scope.remove('...');
-          scope.add(message);
-
-          // if timeout is null, for example, leave the message permanently
-          if (timeout) {
-            $timeout(function() {
-              scope.remove(message);
-            }, timeout);
-          }
-        };
-        // wrap value with .when() to support both strings and promises of strings
-        $q.when(value).then(done, done);
-      });
-    }
-  };
-})
 // # factories
 .factory('$laghttp', function($q, $http) {
   // factories are instance generators, i.e., this function is run once and
