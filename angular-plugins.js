@@ -176,44 +176,6 @@ angular.module('misc-js/angular-plugins', [])
     }
   };
 })
-.directive('enhance', function() {
-  /** Only use this if you've loaded misc-js/textarea.js! */
-  return {
-    restrict: 'A',
-    require: '?ngModel',
-    link: function(scope, el, attrs, ngModel) {
-      // enhance textarea (check if it's a textarea)
-      var textarea = el[0];
-      if (textarea.tagName.toLowerCase() == 'textarea') {
-        if (window.Textarea) {
-          window.Textarea.enhance(textarea);
-        }
-        else {
-          console.error('Cannot enhance <textarea> without first loading textarea.js', textarea);
-        }
-      }
-
-      if (ngModel) {
-        // console.log(textarea, 'ngModel', ngModel);
-        // I think the built-in ng-model will handle actually setting the value?
-        ngModel.$render = function() {
-          // handle undefined input value by representing it as the empty string
-          textarea.value = (ngModel.$viewValue === undefined || ngModel.$viewValue === null) ? '' : ngModel.$viewValue;
-          // jump out of the $digest in case a different ng-model controller is listening
-          setTimeout(function() {
-            // but we need to trigger an 'input' event so that the enhanced Textarea triggers a resize
-            textarea.dispatchEvent(new Event('input'));
-          }, 0);
-        };
-        el.on('blur keyup change', function() {
-          scope.$apply(function() {
-            ngModel.$setViewValue(textarea.value);
-          });
-        });
-      }
-    }
-  };
-})
 .directive('score', function() {
   /** Use like:
 
