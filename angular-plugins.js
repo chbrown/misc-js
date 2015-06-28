@@ -53,30 +53,6 @@ angular.module('misc-js/angular-plugins', [])
     }
   };
 })
-.directive('fixedflow', function() {
-  /** This directive is intended to be used with a <nav> element, so that it
-  drops out of flow, in the current position, but creates an empty shadow
-  element to keep its place
-
-  <nav fixedflow>
-    <a href="/admin/individuals">Individuals</a>
-    <a href="/admin/administrators">Administrators</a>
-  </nav>
-  */
-  return {
-    restrict: 'A',
-    link: function(scope, el, attrs) {
-      // set the el to "position: fixed" in case that's not in the css
-      el.css('position', 'fixed');
-      // placeholder is just a super simple empty shadow element
-      var height = getComputedStyle(el[0]).height;
-      var placeholder = angular.element('<div>');
-      placeholder.css('height', height);
-      placeholder.addClass('fixedflow-placeholder');
-      el.after(placeholder);
-    }
-  };
-})
 .directive('activateCurrentAnchor', function($window, $rootScope) {
   /** This directive is also intended to be used with a <nav> element. It will
   add the class 'current' to the <a> with the closest matching href. It is
